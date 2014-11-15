@@ -1,0 +1,71 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+<script>
+    window.onload = function () {
+        (function () {
+            function useless(fn) {
+                return fn();
+            }
+
+            test('the execution context of a function is not the one where it is invoked, but the one where it is declared.', function () {
+                var text = 'arigato!';
+                assert(useless(function () {
+                    return text;
+                }) === text, 'text === text');
+            });
+        })();
+
+        (function () {
+            var nums = [213, 16, 2058, 54, 10, 1965, 57, 9];
+
+            Array.prototype.compare = function (ary) {
+                if (ary.length === this.length) {
+                    for (var k = 0; k < this.length; k++) {
+                        if (this[k] !== ary[k]) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+            Array.prototype.clone = function () {
+                var ary = [];
+                for (var k = 0; k < this.length; k++) {
+                    ary.push(this[k]);
+                }
+                return ary;
+            };
+            Array.prototype.mySort = function (fn) {
+                var ary = this.clone();
+                for (var k = 0; k < ary.length - 1; k++) {
+                    for (var i = k + 1; i < ary.length; i++) {
+                        if (fn(ary[k], ary[i])) {
+                            var tmp = ary[k];
+                            ary[k] = ary[i];
+                            ary[i] = tmp;
+                        }
+                    }
+                }
+                return ary;
+            };
+            var myFn = function (x, y) {
+                return x > y;
+            };
+            test('sort', function () {
+                assert(nums.sort().compare([9, 10, 16, 54, 57, 213, 1965, 2058]), 'numbers are sorted ' + nums.sort());
+                assert(nums.mySort(myFn).compare([9, 10, 16, 54, 57, 213, 1965, 2058]), 'numbers are sorted ' + nums.mySort(myFn));
+                console.log(nums.mySort(myFn), nums);
+            });
+        })();
+
+    };
+</script>
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

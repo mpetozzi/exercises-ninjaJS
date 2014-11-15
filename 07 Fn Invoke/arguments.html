@@ -1,0 +1,138 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+
+There are many ways to invoke a function, and it is important because it changes the <i>this</i> value.
+<ul>
+    <li>function</li>
+    <li>method</li>
+    <li>costructor</li>
+    <li><i>apply()</i> or <i>call()</i>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    window.onload = function () {
+        test('function', function () {});
+        test('function', function () {});
+        test('function', function () {});
+        test('apply call', function () {
+            function addCan(verb, things) {
+                this.can = function () {
+                    return this.name + ' can ' + verb + ' ' + things;
+                };
+            }
+
+            var person = {
+                name: 'Paul'
+            };
+            var bear = {
+                name: 'Bear'
+            };
+
+            addCan.apply(person, ['do', 'things']);
+            addCan.apply(bear, ['fish', 'salmon']);
+
+
+            assert(person.can() === 'Paul can do things', 'person can');
+
+            assert(person.can() !== 'Paul can fish salmon', 'person cannot');
+
+            assert(bear.can() !== 'Bear can do things', 'bear cannot');
+
+            assert(bear.can() === 'Bear can fish salmon', 'bear can');
+
+            assert(bear.can.apply(person) === 'Paul can fish salmon', 'person can');
+
+            assert(person.can.apply(bear) === 'Bear can do things', 'bear can');
+
+            /*assert(addCan().can.apply({
+            name: 'Goat'
+            }) === 'Goat can do things', 'goat can');*/
+        });
+        test('apply call for callback', function () {
+            /* Imperative way */
+            var firstArray = [1, 3, 4, 7];
+
+            var multiplyTen = function (collection, index) {
+                //arguments.callee = function (collection, index)...
+                //arguments.callee.caller = function imperative(collection)...
+                //this === Window
+                collection[index] = collection[index] * 10;
+            };
+
+            function imperative(collection) {
+                for (var n = 0; n < collection.length; n++) {
+                    multiplyTen(collection, n);
+                }
+            }
+            imperative(firstArray);
+            assert(JSON.stringify(firstArray) === JSON.stringify([10, 30, 40, 70]), 'functional *10');
+
+            /* Functional way */
+            var secondArray = [1, 3, 4, 7];
+
+            var multiplyTen = function () {
+                //arguments.callee = function ()...
+                //arguments.callee.caller = function (item, index, array)...
+                //this === Number
+                return this * 10;
+            };
+            secondArray.forEach(function (item, index, array) {
+                array[index] = multiplyTen.call(item);
+            });
+            assert(JSON.stringify(secondArray) === JSON.stringify([10, 30, 40, 70]), 'iterative *10');
+        });
+        test('apply call', function () {
+            function run() {
+                return this.name + ' is running';
+            }
+
+            var ninja = {
+                name: 'Ninja'
+            };
+
+            assert(run.call(ninja) === 'Ninja is running', 'ninja run');
+        });
+
+        test('from book', function () {
+            /* ECMAScript 6
+            function forEach(list, callback, max, ...rest) {*/
+            /* ECMAScript 5 */
+            function forEach(list, callback, max) {
+                var length = max < list.length ? max : list.length;
+                for (var n = 0; n < length; n++) {
+                    var args = [n];
+                    /* ECMAScript 5 */
+                    Array.prototype.slice.call(arguments, 3, arguments.length).forEach(function (item) {
+                        args.push(item);
+                    });
+                    /* ECMAScript 6
+                    rest.forEach(function (item) {
+                        args.push(item);
+                    });*/
+                    //this is must be done with the apply function, because we pass arguments as array
+                    callback.apply(list[n], args);
+                }
+            }
+            var weapons = ['shuriken', 'katana', 'nunchucks'];
+            forEach(
+                weapons,
+                function (index) {
+                    assert(this == weapons[index],
+                        "Got the expected value of " + arguments[2] + ' ' +
+                        arguments[3] + ' ' + weapons[index]);
+                },
+                2,
+                'super', 'iper');
+        });
+
+    };
+</script>
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

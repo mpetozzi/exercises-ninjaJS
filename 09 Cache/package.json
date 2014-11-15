@@ -1,0 +1,19 @@
+{
+  "name": "CacheFunction",
+  "version": "0.0.1",
+  "description": "Tool to add cache functionality to JavaScript Functions",
+  "main": "HAPPYfier.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [
+    "cache",
+    "function",
+    "javascript"
+  ],
+  "author": "Maicol Petozzi",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.3.9"
+  }
+}

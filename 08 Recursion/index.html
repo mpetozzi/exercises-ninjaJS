@@ -1,0 +1,36 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        test('palindrome', function () {
+
+
+            function isPalindrome(text) {
+                if (text.length === 1 || text.length === 0) {
+                    return true;
+                }
+                if (text[0] === text[text.length - 1]) {
+                    return true && isPalindrome(text.substr(1, text.length - 2));
+                }
+                return false;
+            }
+
+            assert(isPalindrome(''), '');
+            assert(isPalindrome('a'), 'a');
+            assert(isPalindrome('aba'), 'aba');
+            assert(!isPalindrome('abca'), 'abca');
+            assert(isPalindrome('a4c44c4a'), 'a4c44c4a');
+            assert(!isPalindrome('abc'), 'abc');
+        });
+    };
+</script>
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

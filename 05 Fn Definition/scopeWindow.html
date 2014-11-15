@@ -1,0 +1,29 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+<script>
+    var prova = 'ahah';
+</script>
+
+<script>
+    window.onload = function () {
+        test('function', function () {
+            assert(prova === 'ahah', 'out of script tag');
+            assert(window.prova === 'ahah', 'accessible throught window.');
+            assert(capra === 'ahah', 'after and out of script tag');
+            assert(window.capra === 'ahah', 'accessible throught window.');
+        });
+    };
+</script>
+
+<script>
+    var capra = 'ahah';
+</script>
+
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

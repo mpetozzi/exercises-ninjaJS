@@ -1,0 +1,88 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        test('invoke', function () {
+
+            prova(20, 'abc');
+
+            function prova() {
+                assert(arguments.length === 2, 'length');
+                assert(arguments[0] === 20, 'first content');
+                assert(arguments[1] === 'abc', 'second content');
+                assert(arguments instanceof Array, 'instance of Array');
+            }
+        });
+
+        test('function', function () {
+            function prova() {
+                assert(this === window, 'this is window');
+            }
+            prova();
+            assert(this === window, 'this is window');
+        });
+
+        test('method', function () {
+            var obj = {};
+            obj.prova = function () {
+                assert(this === window, 'this is window');
+                assert(this === obj, 'this is obj');
+            }
+            obj.prova();
+        });
+
+        test('function & method', function () {
+            function prova() {
+                return this;
+            }
+            assert(prova() === window, 'this is window');
+
+            var capra = prova;
+            assert(capra() === window, 'this is window');
+
+            var pippo = {
+                pluto: prova
+            };
+            assert(pippo.pluto() === pippo, 'this is pippo');
+
+            var paperino = {
+                pluto: prova
+            };
+            assert(paperino.pluto() === paperino, 'this is paperino');
+
+        });
+
+        test('this in object', function () {
+            function prova() {
+                this.amico = 'ahah';
+            }
+
+            var pippo = {
+                pluto: prova
+            };
+            pippo.pluto()
+            assert(pippo.amico === 'ahah', 'pippo ha un amico');
+
+            var paperino = {
+                pluto: prova
+            };
+            paperino.pluto();
+            assert(paperino.amico === 'ahah', 'paperino ha un amico');
+
+        });
+        test('this with use strict',function(){
+            "use strict";
+            assert(this === undefined, 'this is undefined');
+        });
+    };
+</script>
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

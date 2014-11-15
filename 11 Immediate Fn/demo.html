@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        *{padding:10px}
+        section {
+            text-align: center;
+        }
+        button{
+            width: 110px;
+        }
+        div{
+            text-align: center;
+            margin: 10px 30%;
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <button class="bad">Button 0</button>
+        <button class="bad">Button 1</button>
+        <button class="bad">Button 2</button>
+        <div id="result-bad">Click Button (Wrong)</div>
+        <script>
+            var badResult = document.getElementById('result-bad');
+            var badButtons = document.getElementsByClassName('bad');
+            for (var index = 0; index < badButtons.length; index++) {
+                badButtons[index].addEventListener('click', function () {
+                    badResult.innerHTML = 'Bad Button ' + index + ' clicked';
+                });
+            }
+        </script>
+    </section>
+
+    <section>
+        <button class="good">Button 0</button>
+        <button class="good">Button 1</button>
+        <button class="good">Button 2</button>
+        <div id="result-good">Click buttons (Good)</div>
+        <script>
+            var goodResult = document.getElementById('result-good');
+            var goodButtons = document.getElementsByClassName('good');
+            for (var index = 0; index < goodButtons.length; index++) {
+                (function (storedIndex) {
+                    goodButtons[storedIndex].addEventListener('click', function () {
+                        goodResult.innerHTML = 'Good Button ' + storedIndex + ' clicked';
+                    });
+                })(index);
+            }
+        </script>
+    </section>
+</body>
+
+</html>

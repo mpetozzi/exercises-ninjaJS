@@ -1,0 +1,38 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+<script>
+    function ofWindow() {}
+    window.onload = function () {
+        (function () {
+            test('function', function () {
+                function myFunc() {}
+                assert(myFunc.name === 'myFunc', 'name of function');
+                assert((function () {}).name === '', 'empty name of function');
+            });
+            test('function', function () {
+                try {
+                    myFunc();
+                    assert(false, 'out of scope');
+                } catch (e) {
+                    assert(true, 'out of scope');
+                }
+                assert(window.ofWindow === ofWindow, 'window variable');
+            });
+            test('function', function () {
+                var myFunc = function () {};
+                assert(myFunc.name === '', 'has no name');
+                var myOtherFunc = function Named() {};
+                assert(myOtherFunc.name === 'Named', 'has name');
+            });
+        })();
+
+    };
+</script>
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

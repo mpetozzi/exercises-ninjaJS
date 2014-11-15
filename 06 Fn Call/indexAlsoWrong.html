@@ -1,0 +1,66 @@
+<html>
+<link rel="stylesheet" href="../lib/style.css">
+<script src="../lib/maiTest_0.2.js"></script>
+Functions are available in the scope of the function immediately.
+<br/>But it is not the same for variables.
+<script type="text/javascript">
+    window.onload = function () {
+        test('scopes', function () {
+
+            var call = function () {
+                assert(typeof a === 'number', '### a'); /*test*/
+                assert(typeof b === 'number', '### b'); /*test*/
+                assert(typeof c === 'number', '### c'); /*test*/
+                assert(typeof outer === 'function', '### outer'); /*test*/
+                assert(typeof inner === 'function', '### inner'); /*test*/
+            };
+
+            function outer() {
+
+
+
+                assert(true, '------- before Declare a'); /*test*/
+                call();
+                var a = 1;
+
+                assert(true, '------- after Declare a'); /*test*/
+                call();
+
+                function inner() {}
+
+                assert(true, '------- after Declare inner'); /*test*/
+                call();
+
+                var b = 2;
+
+                assert(true, '------- after Declare b'); /*test*/
+                call();
+
+                if (a) {
+                    assert(true, '------- in if'); /*test*/
+                    call();
+
+                    var c = 3;
+
+                    assert(true, '------- after Declare c'); /*test*/
+                    call();
+                }
+
+                assert(true, '------- out if'); /*test*/
+                call();
+
+            };
+
+            outer();
+
+        });
+
+    };
+</script>
+
+<body>
+    <ul id="results">
+    </ul>
+</body>
+
+</html>

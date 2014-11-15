@@ -1,0 +1,22 @@
+<html>
+<body>
+    <script>
+        var keepWithClosure = (function () {
+            
+            var largeObject = new Array(1000000).join('huge ');
+            
+            return function functionWithClosure() {
+                return largeObject;
+            };
+            
+        })();
+
+        var clean = function () {
+            keepWithClosure = null;
+        }
+    </script>
+    
+    <button onclick="clean()">Clear Reference</button>
+    
+</body>
+</html>
